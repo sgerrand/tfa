@@ -9,6 +9,7 @@ DB.create_table? :tweets do
   primary_key :id
   String :content
   BigNum :twitter_id, :type => :bigint
+  unique [:content, :twitter_id]
 end
 tweets = DB[:tweets]
 
