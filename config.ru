@@ -1,6 +1,15 @@
-require "sinatra"
+require 'dalli'
+require 'rack/cache'
+require 'sinatra'
 
-root_dir = File.dirname(__FILE__)
+if memcachier_servers = ENV["MEMCACHIER_SERVERS"]
+  cache = Dalli::Client.new memcachier_servers.split(','), {
+    username: ENV['MEMCACHIER_USERNAME'],
+    password: ENV['MEMCACHIER_PASSWORD'],
+  }
+  use Rack::Cache, verbose: true, metastore: cache, entitystore: cache
+end
 
-require File.join(root_dir, "app")
+require File.expand_path('../app', __FILE__)
+
 run Sinatra::Application
