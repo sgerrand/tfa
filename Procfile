@@ -1,1 +1,1 @@
-web: bundle exec rackup --port $PORT
+web: bundle exec puma -C puma.rb
